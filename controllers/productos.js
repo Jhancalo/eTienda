@@ -24,7 +24,50 @@ try {
    res.status(500).send({exito:false,
     mensaje:"Error en la consulta"}) 
 }
+
+
+//crear nuevo
     
 };
+const nuevo=async(req,res)=>{
 
-module.exports={listartodos}
+    //llega el objeto en el body del request
+
+let datos={
+    nombre: req.body.nombre,
+    descripcion:req.body.descripcion,
+    imagen:req.body.imagen,
+    marca:req.body.marca,
+    precio:req.body.precio,
+    existencia:req.body.existencia,
+    rating:req.body.rating,
+    numRevisiones:req.body.numRevisiones,
+    estaOfertado:req.body.estadoOfertado
+};
+
+try {
+     //instanciamos del modelo producto(collection)
+
+const productoNuevo = new Producto(datos)
+productoNuevo.save(); //Escribe en mongo 
+
+return res.send({
+    estado:true,
+    mensaje:"Insecion Exitosa!!"
+
+})  
+    
+} catch (error) {
+
+    return res.send({
+        estado:false,
+        mensaje:'Ha ocurrido un ERROR en la consulta!! ${error}',
+    })
+    
+}
+
+   
+
+};
+
+module.exports={listartodos,nuevo}
