@@ -1,17 +1,14 @@
-// controlador para el manejo de los productos
-
+// controlador para el manejo de los Usuarios
 // conectamos el controlador con su modelo correspondiente
-const Producto = require("../models/productos");
-//let Producto = require("../models/productos");
+const Usuario = require("../models/usuarios.js");
 
-// logica de un CRUD tipico.
-const getProductos = async (req, res) => {
+const getUsuarios = async (req, res) => {
   try {
     // consultador todo sin filtro
-    let listarProductos = await Producto.find().exec();
+    let listaUsuarios = await Usuario.find().exec();
     res.status(200).send({
       Exito: true,
-      data: listarProductos,
+      data: listaUsuarios,
       mensaje: "Exito en la consulta",
     });
   } catch (error) {
@@ -21,7 +18,7 @@ const getProductos = async (req, res) => {
     });
   }
 };
-const setProducto = async (req, res) => {
+const setUsuario = async (req, res) => {
   // llega el objeto en el body del request.
   let data = {
     nombre: req.body.nombre,
@@ -35,10 +32,8 @@ const setProducto = async (req, res) => {
     estadoOfertado: req.body.estadoOfertado,
   };
   try {
-    // instancia del modelo Producto (collection).
-    const productoCreate = new Producto(data);
-    // creamos el nuevo documento (que agregaremos a la collection).
-    productoCreate.save(); // salvamos el mongo.
+    const usuarioCreate = new Usuario(data);
+    usuarioCreate.save(); // salvamos el mongo.
     return res.send({
       estado: true,
       mensaje: "¡Insercion Exitosa!",
@@ -46,13 +41,12 @@ const setProducto = async (req, res) => {
   } catch (error) {
     return res.send({
       estado: false,
-      mensaje: `Error en la Insercion: ${error}`,
+      mensaje: Error en la Insercion: ${error},
       error: error,
     });
   }
 };
-const updateProducto = async (req, res) => {
-  // llega el objeto en el body del request.
+const updateUsuario = async (req, res) => {
   let id = req.params.id;
   let data = {
     nombre: req.body.nombre,
@@ -66,25 +60,23 @@ const updateProducto = async (req, res) => {
     estadoOfertado: req.body.estadoOfertado,
   };
   try {
-    // instancia del modelo Producto (collection).
-    let productoUpdate = await Producto.findByIdAndUpdate(id, data);
+    let usuarioUpdate = await Usuario.findByIdAndUpdate(id, data);
 
     return res.send({
       estado: true,
       mensaje: "Actualizacion Exitosa!",
-      reslut: productoUpdate,
+      reslut: usuarioUpdate,
     });
   } catch (error) {
     return res.send({
       estado: false,
-      mensaje: `Error en la Actualizacion: ${error}`,
+      mensaje: Error en la Actualizacion: ${error},
     });
   }
 };
 
 // buscar por ID o otro parametro
 const searchById = async (req, res) => {
-  // recibimos el paramotro por el cual debemos buscar.
   //let id=0;
   let id = req.params.id;
   /*  if (req.params.id) {
@@ -94,9 +86,7 @@ const searchById = async (req, res) => {
   } */
   try {
     // logica de buscar y mostrar el resultado.
-    // let result = await productos.findById({ id: req.params.id }).exec();
-    let result = await Producto.findById(id).exec();
-
+    let result = await Usuario.findById(id).exec();
     return res.send({
       estado: true,
       mensaje: "Consulta Exitosa",
@@ -116,8 +106,7 @@ const deleteById = async (req, res) => {
   let id = req.params.id;
 
   try {
-    // let result = await Producto.findByIdAndDelete(id).exec();
-    let result = await Producto.findOneAndDelete(id).exec();
+    let result = await Usuario.findOneAndDelete(id).exec();
     return res.send({
       estado: true,
       mensaje: "Borrado Exitoso",
@@ -131,9 +120,9 @@ const deleteById = async (req, res) => {
   }
 };
 module.exports = {
-  getProductos,
-  setProducto,
-  updateProducto,
+  getUsuarios,
+  setUsuario,
+  updateUsuario,
   searchById,
   deleteById,
 };
